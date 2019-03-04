@@ -1,7 +1,7 @@
 module.exports = {
     database: 'qa_dashboard',
     username: 'root',
-    password: 'secret999',
+    password: '******',
     host: 'localhost',
     dialect: 'mysql',
     operatorsAliases: false,

@@ -1,5 +1,18 @@
 # QA Dashboard
 
+##### Add following entries to your hosts file before lighten up docker containers 
+```
+127.0.0.1	www.qa-dashboard.com
+127.0.0.1	api.qa-dashboard.com
+```
+
+##### Run the project 
+```
+cd qa-dashboard
+docker-compose up -d
+```
+
+
 ## API to post test results
 
 ```

@@ -1,0 +1,82 @@
+﻿{
+  "envs": [
+    {
+      "value": 1,
+      "label": "DEV"
+    },
+    {
+      "value": 2,
+      "label": "QA"
+    },
+    {
+      "value": 3,
+      "label": "STAGING"
+    },
+    {
+      "value": 4,
+      "label": "PROD"
+    },
+    {
+      "value": 5,
+      "label": "REVIEW APPS"
+    }
+  ],
+  "status": [
+    {
+      "value": 1,
+      "label": "PASS"
+    },
+    {
+      "value": 2,
+      "label": "FAIL"
+    },
+    {
+      "value": 3,
+      "label": "CRITICAL"
+    },
+    {
+      "value": 4,
+      "label": "INPROGRESS"
+    },
+    {
+      "value": 5,
+      "label": "WARNING"
+    },
+    {
+      "value": 6,
+      "label": "FAILURE"
+    }
+  ],
+  "types": [
+    {
+      "value": 1,
+      "label": "FEATURE"
+    },
+    {
+      "value": 2,
+      "label": "SCENARIO"
+    },
+    {
+      "value": 3,
+      "label": "REGRESSION"
+    },
+    {
+      "value": 4,
+      "label": "UNIT TESTING"
+    }
+  ],
+  "sprint_names": [
+    {
+      "value": "Sprint-1",
+      "label": "Sprint-1"
+    },
+    {
+      "value": "Sprint-2",
+      "label": "Sprint-2"
+    },
+    {
+      "value": "Sprint-3",
+      "label": "Sprint-3"
+    }
+  ]
+}

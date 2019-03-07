@@ -10,11 +10,17 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "axios": "^0.18.0",
+    "moment": "^2.24.0",
     "vue": "^2.6.6",
+    "vue-date-picker": "^2.3.0",
+    "vue-moment": "^4.0.0",
     "vue-router": "^3.0.1",
+    "vue-select": "^2.5.1",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
+    "@angular/cli": "^7.3.4",
     "@vue/cli-plugin-babel": "^3.4.0",
     "@vue/cli-plugin-e2e-nightwatch": "^3.4.0",
     "@vue/cli-plugin-eslint": "^3.4.0",

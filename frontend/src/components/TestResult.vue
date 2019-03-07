@@ -89,11 +89,15 @@
           <li>Link</li>
         </ul>
         <ul v-for="value in testResults" v-bind:key="value.id" class="results">
-          <li> {{ value.ticket_name }}</li>
+          <li> {{ value.ticket_name || 'N/A' }}</li>
           <li> {{ value.description }}</li>
           <li> {{ value.inserted_at  | moment("MMMM Do YYYY") }}</li>
-          <li class="passed"> {{ value.status }}</li>
-          <li><a :href="value.report_url"> Click Here</a></li>
+          <li class="passed" v-if="value.status === 1">Passed</li>
+          <li class="failed" v-else-if="value.status === 2">Failed</li>
+          <li class="critical" v-else-if="value.status === 3">Critical</li>
+          <li class="inprogress" v-else-if="value.status === 4">In-Progress</li>
+          <li class="warning" v-else-if="value.status === 5">Warning</li>
+          <li><a :href="value.report_url"> View Report</a></li>
         </ul>
       </div>
       </div>

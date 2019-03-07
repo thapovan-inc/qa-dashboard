@@ -38,6 +38,16 @@ logger.token('data', function (req, res) {
     return '';
 });
 
+// CORS middleware
+const allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', '*');
+    res.header('Access-Control-Allow-Headers', '*');
+
+    next();
+}
+app.use(allowCrossDomain);
+
 app.use(assignId);
 app.use(logger('[ :id ] [ :date[clf] ] : :method req { :url :data } res { :status :res[content-length] }', {stream: accessLogStream}));
 app.use(express.json());

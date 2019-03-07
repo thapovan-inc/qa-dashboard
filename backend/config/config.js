@@ -1,8 +1,8 @@
 module.exports = {
-    database: 'qa_dashboard',
-    username: 'root',
-    password: '******',
-    host: 'localhost',
+    database: process.env.DATABASE_NAME || 'qa_dashboard',
+    username: process.env.DATABASE_USER || 'qa_user',
+    password: process.env.DATABASE_PASS || 'pass123',
+    host: process.env.DATABASE_HOST || 'localhost',
     dialect: 'mysql',
     operatorsAliases: false,
     logging: false,

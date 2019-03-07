@@ -8,8 +8,8 @@ const rfs = require('rotating-file-stream');
 const uuid = require('uuid/v4');
 
 const indexRouter = require('./routes');
-const searchFiltersRouter = require('./routes/searchFilters');
-const automationResultsRouter = require('./routes/automationResults');
+const getSearchFiltersRouter = require('./routes/getSeachFilters');
+const getSearchResultsRouter = require('./routes/getSearchResults');
 
 const app = express();
 const logDirectory = path.join(__dirname, 'logs');
@@ -39,13 +39,14 @@ logger.token('data', function (req, res) {
 });
 
 // CORS middleware
-const allowCrossDomain = function(req, res, next) {
+const allowCrossDomain = function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', '*');
     res.header('Access-Control-Allow-Headers', '*');
 
     next();
-}
+};
+
 app.use(allowCrossDomain);
 
 app.use(assignId);
@@ -55,8 +56,8 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 
 app.use('/v1/', indexRouter);
-app.use('/v1/searchFilters', searchFiltersRouter);
-app.use('/v1/automationResults', automationResultsRouter);
+app.use('/v1/filters', getSearchFiltersRouter);
+app.use('/v1/results', getSearchResultsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

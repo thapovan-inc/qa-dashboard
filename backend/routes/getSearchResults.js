@@ -1,8 +1,10 @@
 const express = require('express');
 const async = require('async');
 const models = require('../models');
-const router = express.Router();
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
+const router = express.Router();
 const regexSpecialChars = /[^a-zA-Z0-9-_\s]/g;
 const requiredParams = ['types', 'env', 'status', 'description', 'report_url'];
 
@@ -11,19 +13,73 @@ models.automationResults.belongsTo(models.automationEnvMaster, {foreignKey: 'env
 models.automationResults.belongsTo(models.automationStatusMaster, {foreignKey: 'status', as: 'statusDef'});
 
 router.get('/', function (req, res, next) {
-    const limit = req.params.limit || 25;
-    const page = req.params.page || 1;
-    const offset = (page - 1) * limit;
+    const types = req.query.type || 0;
+    const env = req.query.env || 0;
+    const sprint = req.query.sprint || '';
+    const ticket = req.query.ticket || '';
+    const status = req.query.status || '';
+    const limit = req.query.limit || 25;
+    const page = req.query.page || 1;
+    const offset = (parseInt(page, 10) - 1) * limit;
+    const deleteList = ['typesDef', 'envDef', 'statusDef'];
+    const deleteNodes = ['created_by', 'created_at', 'updated_at'];
+
+    let whereQuery = {};
+    const whereArray = [];
+
+    if (parseInt(types, 10) > 0) {
+        whereArray.push({types});
+    }
+
+    if (parseInt(env, 10) > 0) {
+        whereArray.push({env});
+    }
+
+    if (parseInt(status, 10) > 0) {
+        whereArray.push({status});
+    }
+
+    if (sprint !== '') {
+        whereArray.push({sprint_name: sprint});
+    }
+
+    if (ticket !== '') {
+        whereArray.push({ticket_name: ticket});
+    }
+
+    if (whereArray.length > 0) {
+        whereQuery = {[Op.and]: whereArray};
+    }
+
     models.automationResults.findAll({
+        attributes: [
+            'id',
+            'sprint_name',
+            'ticket_name',
+            'description',
+            'report_url',
+            [Sequelize.fn('date_format', Sequelize.col('inserted_at'), '%Y-%m-%d %H:%i:%s'), 'inserted_at']
+        ],
         include: ['typesDef', 'envDef', 'statusDef'],
+        where: whereQuery,
         offset,
-        limit,
+        limit: parseInt(limit, 10),
         order: [['id', 'DESC']]
-    }).then(results => {
-        res.json(results);
-    }).catch(error => {
-        res.json({error: error.message});
     })
+        .map(el => el.get({plain: true}))
+        .then(results => {
+            results.forEach(r => {
+                deleteList.forEach(d => {
+                    deleteNodes.forEach(n => {
+                        delete r[d][n];
+                    });
+                });
+            });
+            res.json(results);
+        })
+        .catch(error => {
+            res.json({error: error.message});
+        })
 });
 
 router.post('/', function (req, res, next) {

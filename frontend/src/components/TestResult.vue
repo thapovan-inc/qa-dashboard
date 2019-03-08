@@ -168,7 +168,7 @@
       resetSearch: function (event) {
         this.envs = '';
         this.type = '';
-        this.ticket_no = 'All';
+        this.ticket_no =  {label: "All", value: ""};
         this.sprint = '';
         this.status = '';
         this.startDate = '';
@@ -187,13 +187,13 @@
           }).catch(exception => {
             console.error(exception);
             this.ticketFilters = [{
-              "value": "All",
+              "value": "",
               "label": "All"
             }];
           });
         } else {
           this.ticketFilters = [{
-            "value": "All",
+            "value": "",
             "label": "All"
           }];
         }

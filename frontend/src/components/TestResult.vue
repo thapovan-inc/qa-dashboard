@@ -68,7 +68,9 @@
               </template>
             </v-select>
           </li>
-          <!--<li><datepicker v-model="endDate" value="05-03-2019" format="DD-MM-YYYY" name="date2"></datepicker></li>-->
+          <li>
+            <date-picker v-model="startDate" :lang="lang"></date-picker>
+          </li>
           <li>
             <button type="button" @click="displaynumbers" ref="myBtn">
               Search!
@@ -113,8 +115,9 @@
 </template>
 
 <script>
-  import datepicker from 'vue-date-picker'
+  import DatePicker from 'vue2-datepicker'
   import Api from '../services/Api';
+  import moment from 'moment';
 
   export default {
     name: 'TestResult',
@@ -126,21 +129,34 @@
         sprint: {label: "All", value: ""},
         status: {label: "All", value: ""},
         testResults: [],
-        endDate: '04-03-2019',
+        startDate: '',
         searchFilters: [],
         ticketFilters: [{
           "value": "",
           "label": "All"
         }],
+        // custom lang
+        lang: {
+          days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+          months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          pickers: ['next 7 days', 'next 30 days', 'previous 7 days', 'previous 30 days'],
+          placeholder: {
+            date: 'Select Date',
+            dateRange: 'Select Date Range'
+          }
+        },
       }
     },
     components: {
-      datepicker
+      DatePicker
     },
     methods: {
       displaynumbers: function (event) {
-        console.log(this.endDate);
-        Api.get(`/results?env=${this.envs.value}&type=${this.type.value}&ticket=${this.ticket_no.value}&sprint=${this.sprint.value}&status=${this.status.value}&uid=`)
+        console.log(this.startDate);
+        if(this.startDate) {
+          this.startDate = moment(this.startDate).format('YYYY/MM/DD');
+        }
+        Api.get(`/results?env=${this.envs.value}&type=${this.type.value}&ticket=${this.ticket_no.value}&sprint=${this.sprint.value}&status=${this.status.value}&date=${this.startDate}`)
           .then(response => {
             this.testResults = response.data || [];
             console.log(this.testResults);
@@ -155,6 +171,7 @@
         this.ticket_no = 'All';
         this.sprint = '';
         this.status = '';
+        this.startDate = '';
         Api.get(`/results`).then(response => {
           this.testResults = response.data || [];
           console.log(this.testResults);
@@ -180,6 +197,9 @@
             "label": "All"
           }];
         }
+      },
+      doSelection: function() {
+        console.log(this.startDate);
       }
     },
     mounted() {
@@ -855,6 +875,10 @@
 
   .v-select.open .open-indicator {
     top: 15px !important;
+  }
+
+  .mx-datepicker {
+    width: 120px !important;
   }
 
   body.scrolldiv {
